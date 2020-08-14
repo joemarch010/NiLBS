@@ -34,3 +34,22 @@ class OccupancyFunctionMesh(OccupancyFunction):
         else:
 
             return 0.0
+
+    def evaluate_set(self, X):
+        """
+        :param X:
+        :return: {o | o in {0, 1}}
+        """
+
+        outputs = is_inside_turbo(self.mesh.triangles, X)
+        result = np.zeros(X.shape[0])
+
+        for i in range(0, outputs.shape[0]):
+
+            if outputs[i]:
+
+                result[i] = 1
+
+        return result
+
+
