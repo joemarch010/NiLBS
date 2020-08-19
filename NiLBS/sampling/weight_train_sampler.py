@@ -1,10 +1,10 @@
 
 import numpy as np
 
-from sampling.point_sampler_box import PointSamplerBox
-from sampling.point_sampler_surface import PointSamplerSurface
-from skinning.skinning_mesh_lbs import LBSMeshDeformer
-from weighting.weighting_function_pointwise import WeightingFunctionPointwise
+from NiLBS.sampling.point_sampler_box import PointSamplerBox
+from NiLBS.sampling.point_sampler_surface import PointSamplerSurface
+from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
+from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 
 
 class WeightTrainSampler:

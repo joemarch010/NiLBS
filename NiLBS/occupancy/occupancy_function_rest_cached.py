@@ -1,5 +1,5 @@
 
-from occupancy.occupancy_function import OccupancyFunction
+from NiLBS.occupancy.occupancy_function import OccupancyFunction
 
 class OccupancyFunctionRestCached(OccupancyFunction):
     """

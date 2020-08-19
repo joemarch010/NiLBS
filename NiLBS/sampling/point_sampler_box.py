@@ -45,7 +45,7 @@ class PointSamplerBox:
         :return: array-like, sampled points.
         """
 
-        if self.distribution is 'uniform':
+        if self.distribution == 'uniform':
             return self.sample_points_uniform(n)
 
         return None

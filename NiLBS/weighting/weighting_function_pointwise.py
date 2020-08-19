@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from weighting.weighting_function import WeightingFunction
+from NiLBS.weighting.weighting_function import WeightingFunction
 
 
 class WeightingFunctionPointwise(WeightingFunction):

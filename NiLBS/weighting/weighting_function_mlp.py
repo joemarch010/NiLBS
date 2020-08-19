@@ -1,9 +1,9 @@
 
 
-from weighting.weight_function import WeightFunction
+from NiLBS.weighting.weighting_function import WeightingFunction
 
 
-class WeightingFunctionMLP(WeightFunction):
+class WeightingFunctionMLP(WeightingFunction):
     """
 
 

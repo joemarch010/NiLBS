@@ -2,7 +2,7 @@
 import numpy as np
 import torch
 
-from pose.pose import Pose
+from NiLBS.pose.pose import Pose
 
 
 def calculate_joints(vertices, j_regressor):

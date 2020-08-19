@@ -30,7 +30,7 @@ class PointSamplerSurface:
 
     def generate_noise_samples(self, n):
 
-        if self.noise is 'isotropic':
+        if self.noise == 'isotropic':
 
             return self.generate_isotropic_noise_samples(n)
         else:
@@ -61,7 +61,7 @@ class PointSamplerSurface:
 
         samples = None
 
-        if self.distribution is 'uniform':
+        if self.distribution == 'uniform':
 
             samples = self.sample_points_uniform(n)
         else:

@@ -2,7 +2,7 @@
 import numpy as np
 
 from human_body_prior.tools.omni_tools import copy2cpu as c2c
-from pose.util import pose_from_smplh
+from NiLBS.pose.util import pose_from_smplh
 
 class PoseSamplerAMASS:
     """
@@ -34,10 +34,11 @@ class PoseSamplerAMASS:
         """
         poses = []
         total_frames = self.bdata['poses'].shape[0]
+        count = 0
 
         for i in range(offset, total_frames, step):
 
-            if i > n_frames != -1:
+            if count >= n_frames != -1:
                 break
 
             root_orient = self.bdata['poses'][i:i + 1, :3]
@@ -48,6 +49,8 @@ class PoseSamplerAMASS:
             pose = pose_from_smplh(self.v_template, full_pose, self.bone_hierachy, self.j_regressor)
 
             poses.append(pose)
+
+            count += 1
 
         result = np.array(poses)
 

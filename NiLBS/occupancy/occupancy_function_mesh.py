@@ -1,8 +1,8 @@
 
 import numpy as np
 
-from occupancy.occupancy_function import OccupancyFunction
-from occupancy.winding_numbers import is_inside_turbo
+from NiLBS.occupancy.occupancy_function import OccupancyFunction
+from NiLBS.occupancy.winding_numbers import is_inside_turbo
 
 
 class OccupancyFunctionMesh(OccupancyFunction):
