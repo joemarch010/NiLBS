@@ -8,11 +8,11 @@ class MeshOccupancy:
     """
 
 
-    Mesh class which is backed by an occupancy function.
+    Mesh which is backed by an occupancy function.
 
 
     """
-    def __init__(self, occupancy_function, iso_level, bounds, resolution = [32, 32, 32]):
+    def __init__(self, occupancy_function, iso_level, bounds, resolution = [64, 64, 64]):
 
         self.occupancy_function = occupancy_function
         self.iso_level = iso_level
@@ -29,20 +29,6 @@ class MeshOccupancy:
     def calculate_voxel_matrix(self, max):
 
         """
-
-        start:
-        level = 0
-        origin
-        G = grid([X, Y, Z]) + origin
-
-        eval_points(G)
-
-        for all c in G with active corners
-
-
-
-
-
         :param max:
         :return:
         """
@@ -64,9 +50,9 @@ class MeshOccupancy:
         zz = zz.flatten()
 
         points = np.array([xx, yy, zz]).reshape((xx.shape[0], 3))
-        occupancy_mask  = self.occupancy_function.evaluate_set(points)
+        occupancy_mask = self.occupancy_function.evaluate_set(points)
         inside_points = points[occupancy_mask > self.iso_level]
         indices = points_to_indices(inside_points, pitch=1.0, origin=np.array([0.0, 0.0, 0.0]))
 
-        self.mesh = points_to_marching_cubes(inside_points * 16, pitch=1.0)
+        self.mesh = points_to_marching_cubes(inside_points * 32, pitch=1.0)
 

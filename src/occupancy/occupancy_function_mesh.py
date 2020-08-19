@@ -6,7 +6,13 @@ from occupancy.winding_numbers import is_inside_turbo
 
 
 class OccupancyFunctionMesh(OccupancyFunction):
+    """
 
+
+    Occupancy function backed by a mesh.
+
+
+    """
     def __init__(self, mesh):
         """
         :param mesh: The mesh for use for use when evaluating the function. Note that mesh must contain both
@@ -41,7 +47,7 @@ class OccupancyFunctionMesh(OccupancyFunction):
         :return: {o | o in {0, 1}}
         """
 
-        outputs = is_inside_turbo(self.mesh.triangles, X)
+        outputs = self.mesh.contains(X)
         result = np.zeros(X.shape[0])
 
         for i in range(0, outputs.shape[0]):

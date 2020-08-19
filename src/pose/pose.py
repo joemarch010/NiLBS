@@ -12,6 +12,10 @@ class Pose:
         :param bone_matrices: Numpy array-like, Bx4x4 array of bone transformation matrices.
         """
         self.bone_matrices = bone_matrices
+        self.inverse_bone_matrices = np.zeros(bone_matrices.shape)
+
+        for i in range(0, bone_matrices.shape[0]):
+            self.inverse_bone_matrices[i] = np.linalg.inv(bone_matrices[i])
 
     def get_naive_encoding(self):
         """
@@ -35,9 +39,9 @@ class Pose:
         t0_homo[1] = t0[1]
         t0_homo[2] = t0[2]
 
-        for i in range(0, self.bone_matrices.shape[0]):
+        for i in range(0, self.inverse_bone_matrices.shape[0]):
 
-            t0_trans = np.matmul(self.bone_matrices[i], t0_homo)
+            t0_trans = np.matmul(self.inverse_bone_matrices[i], t0_homo)
             result[i * 3 + 0] = t0_trans[0]
             result[i * 3 + 1] = t0_trans[1]
             result[i * 3 + 2] = t0_trans[2]

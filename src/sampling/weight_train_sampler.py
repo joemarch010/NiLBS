@@ -8,9 +8,20 @@ from weighting.weighting_function_pointwise import WeightingFunctionPointwise
 
 
 class WeightTrainSampler:
+    """
 
+
+    Class for creating sample data for use in training the weight network (W_omega)
+
+
+    """
     def __init__(self, occupancy_function, mesh, weights):
+        """
 
+        :param occupancy_function, OccupancyFunction, to use when calculating the occupancy values of sample points
+        :param mesh: Trimesh.Mesh, mesh to sample from
+        :param weights: Numpy array-like, VxB, vertex weights. (Perhaps should be WeightingFunction)
+        """
         self.occupancy_function = occupancy_function
         self.mesh = mesh
         self.weights = weights
@@ -19,6 +30,21 @@ class WeightTrainSampler:
         self.lbs_deformer = LBSMeshDeformer(mesh.vertices, wf)
 
     def sample_pose(self, pose, n_bb_points=1024, n_surface_points=1024):
+        """
+
+        Create a sample from a pose using a given number of sample points.
+
+        @Additional:
+            It may be worth saving surface points and bounding box points separately.
+
+        :param pose: Numpy array-like, Bx4x4, bone matrices for use in mesh deformation.
+        :param n_bb_points: Int, number of points to use within the bounding box of the mesh.
+        :param n_surface_points: Int, number of points to use from the surface of the mesh.
+        :return: Dict, containing relevant sample data:
+                                'vertices': deformed_vertices,
+                                'weights': vertex_weights,
+                                'occupancy_points': pre-calculated occupancy value for all sample points packed (vertex, occupancy)
+        """
 
         posed_vertices = self.lbs_deformer.apply_lbs(pose)
         result = dict()

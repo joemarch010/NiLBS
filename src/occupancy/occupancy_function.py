@@ -1,5 +1,5 @@
 
-class OccupancyFunction():
+class OccupancyFunction:
 
     def __init__(self):
 

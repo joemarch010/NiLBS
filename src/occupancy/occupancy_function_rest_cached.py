@@ -8,7 +8,7 @@ class OccupancyFunctionRestCached(OccupancyFunction):
 
 
     """
-    def __init__(self, rest_occupancy_function):
+    def __init__(self, rest_occupancy_function, weighting_function):
 
         self.rest_occupancy_function = rest_occupancy_function
-        return
+        self.weighting_function = weighting_function
