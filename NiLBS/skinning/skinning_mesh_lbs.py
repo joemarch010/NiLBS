@@ -39,7 +39,7 @@ class LBSMeshDeformer:
             vertex_homo[2] = vertex[2]
             vertex_homo[3] = 1
 
-            vertex_weights = self.weighting_function.evaluate(vertex)
+            vertex_weights = self.weighting_function.evaluate(vertex, pose)
             bone_matrices = pose.bone_matrices
             transform_matrix = np.zeros((4, 4))
 
