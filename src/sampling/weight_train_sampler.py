@@ -35,7 +35,7 @@ class WeightTrainSampler:
         Create a sample from a pose using a given number of sample points.
 
         @Additional:
-            It may be worth saving surface points and bounding box points separately.
+            It may be worth saving surface occupancy and bounding box ocupancy separately.
 
         :param pose: Numpy array-like, Bx4x4, bone matrices for use in mesh deformation.
         :param n_bb_points: Int, number of points to use within the bounding box of the mesh.
