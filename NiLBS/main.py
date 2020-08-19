@@ -12,6 +12,7 @@ from human_body_prior.body_model.body_model import BodyModel
 
 from NiLBS.occupancy.occupancy_function_mesh import OccupancyFunctionMesh
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
+from NiLBS.weighting.weighting_function_mlp_naive import WeightingFunctionMLPNaive
 from NiLBS.pose.pose import Pose
 from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
 from NiLBS.pose.util import pose_from_smplh
@@ -41,18 +42,21 @@ weights = c2c(bm.weights)
 vertices = c2c(bm.v_template)[0]
 
 
-wf = WeightingFunctionPointwise(vertices, weights);
+weight_model_path = '../models/weight_naive'
+
+wfmlp = WeightingFunctionMLPNaive(model_path=weight_model_path)
+
+
+wf = WeightingFunctionPointwise(vertices, weights)
+
+
 md = LBSMeshDeformer(vertices, wf)
 body_mesh = trimesh.Trimesh(vertices=md.apply_lbs(frame_poses[0]), faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 ofm = OccupancyFunctionMesh(body_mesh)
 #mo = MeshOccupancy(ofm, 0.5, body_mesh.bounds)
 wts = WeightTrainSampler(ofm, body_mesh, weights)
 
-weight_train_samples = []
-
-for i in range(0, frame_poses.shape[0]):
-
-    weight_train_samples.append(wts.sample_pose(frame_poses[i]))
+test = wfmlp.evaluate(vertices[0], frame_poses[0])
 
 print('Occupancy mesh extracted')
 
