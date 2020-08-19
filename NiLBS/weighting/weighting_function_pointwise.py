@@ -26,7 +26,11 @@ class WeightingFunctionPointwise(WeightingFunction):
 
             self.point_map[vertices[i].data.tobytes()] = weights[i]
 
-    def evaluate(self, x):
+    def generate_query(self, x, pose):
+
+        return x
+
+    def evaluate(self, x, pose):
 
         if x.data.tobytes() in self.point_map:
 

@@ -15,7 +15,11 @@ class WeightingFunction:
 
         self.n_bones = n_bones
 
-    def evaluate(self, x):
+    def generate_query(self, x, pose):
+
+        return None
+
+    def evaluate(self, x, pose):
         """
         :param x: Point, (x, y, z)
         :return: Array-Like, all point are assigned 1 to the root bone and 0 to all others.
