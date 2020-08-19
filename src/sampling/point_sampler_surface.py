@@ -22,9 +22,9 @@ class PointSamplerSurface:
         self.noise = noise
         self.sigma = sigma
 
-    def generate_isptropic_noise_samples(self, n):
+    def generate_isotropic_noise_samples(self, n):
 
-        result = np.zeros(n, 3)
+        result = np.random.normal(0, self.sigma, (n, 3))
 
         return result
 
@@ -32,10 +32,10 @@ class PointSamplerSurface:
 
         if self.noise is 'isotropic':
 
-            return self.generate_isptropic_noise_samples(n)
+            return self.generate_isotropic_noise_samples(n)
         else:
 
-            return np.zeros(n, 3)
+            return np.zeros((n, 3))
 
     def sample_points_uniform(self, n):
 
@@ -59,9 +59,15 @@ class PointSamplerSurface:
 
     def sample_points(self, n):
 
+        samples = None
+
         if self.distribution is 'uniform':
 
-            return self.sample_points_uniform(n)
+            samples = self.sample_points_uniform(n)
         else:
 
-            return np.zeros((n, 3))
+            samples = np.zeros((n, 3))
+
+        noise = self.generate_noise_samples(n)
+
+        return samples + noise
