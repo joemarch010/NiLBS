@@ -61,6 +61,7 @@ class WeightTrainSampler:
         occupancy_points = np.concatenate((bb_occupancy_points, surface_occupancy_points), axis=0)
 
         result['vertices'] = posed_vertices
+        result['rest_vertices'] = self.mesh.vertices
         result['pose'] = pose
         result['weights'] = self.weights
         result['occupancy_points'] = occupancy_points
