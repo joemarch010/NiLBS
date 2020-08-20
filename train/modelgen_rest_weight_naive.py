@@ -3,14 +3,10 @@
 
 
 
-Builds and then saves an *incredibly* naive weight prediction network using keras.
-The work uses the naive pose encoding for queries, i.e queries must have dimension 3 + 16 * B.
-Only use this model for testing the API.
-
-
 
 
 """
+
 import numpy as np
 
 from tensorflow import keras
@@ -20,7 +16,7 @@ from tensorflow.keras import layers
 if __name__ == '__main__':
 
     train_data_path = '../data/weight/weight_small_train.npz'
-    model_output_path = '../models/weight_naive'
+    model_output_path = '../models/weight_rest_naive'
 
     train_data = np.load(train_data_path, allow_pickle=True)['arr_0']
     n_weights = train_data[0]['weights'].shape[1]
@@ -36,7 +32,7 @@ if __name__ == '__main__':
 
             vertex = sample['vertices'][i]
             weights = sample['weights'][i]
-            query = np.concatenate((vertex, pose_encoding), axis=0)
+            query = vertex
 
             X.append(query)
             Y.append(weights)
@@ -55,7 +51,7 @@ if __name__ == '__main__':
         layers.Dense(n_weights, activation='softmax')
     ])
 
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse', 'msa'])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse'])
 
     model.summary()
 
