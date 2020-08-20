@@ -29,6 +29,7 @@ class LBSMeshDeformer:
         :return: Numpy array-like, Vx3, the deformed vertices.
         """
         result = np.zeros(self.rest_vertices.shape)
+        weights = self.weighting_function.evaluate_set(self.rest_vertices, pose)
 
         for i in range(0, self.rest_vertices.shape[0]):
 
@@ -39,7 +40,7 @@ class LBSMeshDeformer:
             vertex_homo[2] = vertex[2]
             vertex_homo[3] = 1
 
-            vertex_weights = self.weighting_function.evaluate(vertex, pose)
+            vertex_weights = weights[i]
             bone_matrices = pose.bone_matrices
             transform_matrix = np.zeros((4, 4))
 
