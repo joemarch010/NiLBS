@@ -13,6 +13,7 @@ from human_body_prior.body_model.body_model import BodyModel
 from NiLBS.occupancy.occupancy_function_mesh import OccupancyFunctionMesh
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 from NiLBS.weighting.weighting_function_mlp_naive import WeightingFunctionMLPNaive
+from NiLBS.weighting.weighting_function_mlp_rest_naive import WeightingFunctionMLPRestNaive
 from NiLBS.pose.pose import Pose
 from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
 from NiLBS.pose.util import pose_from_smplh
@@ -32,7 +33,7 @@ npz_bdata_path = '../data/AMASS/MPILimits/MPI_Limits/03099/lar1_poses.npz' # the
 bdata = np.load(npz_bdata_path)
 
 psa = PoseSamplerAMASS(bm, bdata)
-frame_poses = psa.sample_frames(step=100, n_frames=1)
+frame_poses = psa.sample_frames(step=100, n_frames=10)
 
 imw, imh=1000, 1000
 mv = MeshViewer(width=imw, height=imh, use_offscreen=False)
@@ -42,21 +43,20 @@ weights = c2c(bm.weights)
 vertices = c2c(bm.v_template)[0]
 
 
-weight_model_path = '../models/weight_naive'
+weight_model_path = '../models/weight_rest_naive'
 
-wfmlp = WeightingFunctionMLPNaive(model_path=weight_model_path)
+#wfmlp = WeightingFunctionMLPNaive(model_path=weight_model_path)
+wfmlpr = WeightingFunctionMLPRestNaive(model_path=weight_model_path)
 
 
 wf = WeightingFunctionPointwise(vertices, weights)
 
 
-md = LBSMeshDeformer(vertices, wf)
+md = LBSMeshDeformer(vertices, wfmlpr)
 body_mesh = trimesh.Trimesh(vertices=md.apply_lbs(frame_poses[0]), faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 ofm = OccupancyFunctionMesh(body_mesh)
 #mo = MeshOccupancy(ofm, 0.5, body_mesh.bounds)
 wts = WeightTrainSampler(ofm, body_mesh, weights)
-
-test = wfmlp.evaluate(vertices[0], frame_poses[0])
 
 print('Occupancy mesh extracted')
 
