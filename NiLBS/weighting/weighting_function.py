@@ -19,6 +19,10 @@ class WeightingFunction:
 
         return None
 
+    def generate_query_set(self, X, pose):
+
+        return None
+
     def evaluate(self, x, pose):
         """
         :param x: Point, (x, y, z)
@@ -26,5 +30,19 @@ class WeightingFunction:
         """
         result = np.zeros((self.n_bones))
         result[0] = 1
+
+        return result
+
+    def evaluate_set(self, X, pose):
+        """
+
+        Evaluate the function at a set of points.
+
+        :param X: Numpy array-like, N x 3, points to evaluate.
+        :param pose: Pose, pose to query
+        :return: Numoy array-like, NxB, result of the weighting function at the points.
+        """
+
+        result = np.zeros(X.shape[0], self.n_bones)
 
         return result

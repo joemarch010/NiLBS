@@ -1,12 +1,11 @@
 
-import numpy as np
-
-from tensorflow import keras
-
 from NiLBS.weighting.weighting_function import WeightingFunction
 
+import numpy as np
+import tensorflow.keras as keras
 
-class WeightingFunctionMLPNaive(WeightingFunction):
+
+class WeightingFunctionMLPRestNaive(WeightingFunction):
     """
 
 
@@ -26,15 +25,11 @@ class WeightingFunctionMLPNaive(WeightingFunction):
 
     def generate_query(self, x, pose):
 
-        return np.concatenate((x, pose.get_naive_encoding()), axis=0)
+        return x
 
     def generate_query_set(self, X, pose):
 
-        pose_encoding = pose.get_naive_encoding()
-        pose_encoding_list = np.tile(pose_encoding, (X.shape[0], 1))
-        result = np.concatenate((X, pose_encoding_list), axis=1)
-
-        return result
+        return X
 
     def evaluate(self, x, pose):
 

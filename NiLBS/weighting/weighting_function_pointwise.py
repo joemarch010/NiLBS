@@ -21,6 +21,7 @@ class WeightingFunctionPointwise(WeightingFunction):
         """
         self.point_map = dict()
         self.n_weights = weights.shape[1]
+        self.n_bones = weights.shape[1]
 
         for i in range(0, vertices.shape[0]):
 
@@ -30,6 +31,10 @@ class WeightingFunctionPointwise(WeightingFunction):
 
         return x
 
+    def generate_query_set(self, X, pose):
+
+        return X
+
     def evaluate(self, x, pose):
 
         if x.data.tobytes() in self.point_map:
@@ -38,5 +43,15 @@ class WeightingFunctionPointwise(WeightingFunction):
 
         result = np.zeros((self.n_weights))
         result[0] = 1
+
+        return result
+
+    def evaluate_set(self, X, pose):
+
+        result = np.zeros((X.shape[0], self.n_bones))
+
+        for i in range(0, X.shape[0]):
+
+            result[i] = self.evaluate(X[i], pose)
 
         return result
