@@ -11,6 +11,7 @@ from human_body_prior.tools.omni_tools import copy2cpu as c2c
 from human_body_prior.body_model.body_model import BodyModel
 
 from NiLBS.occupancy.occupancy_function_mesh import OccupancyFunctionMesh
+from NiLBS.occupancy.voxel.util import extract_voxel_grid
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 from NiLBS.weighting.weighting_function_mlp_naive import WeightingFunctionMLPNaive
 from NiLBS.weighting.weighting_function_mlp_rest_naive import WeightingFunctionMLPRestNaive
@@ -47,14 +48,19 @@ weight_model_path = '../models/weight_rest_naive'
 
 #wfmlp = WeightingFunctionMLPNaive(model_path=weight_model_path)
 wfmlpr = WeightingFunctionMLPRestNaive(model_path=weight_model_path)
-
-
 wf = WeightingFunctionPointwise(vertices, weights)
 
-
 md = LBSMeshDeformer(vertices, wfmlpr)
-body_mesh = trimesh.Trimesh(vertices=md.apply_lbs(frame_poses[0]), faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
+body_mesh = trimesh.Trimesh(vertices=vertices, faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 ofm = OccupancyFunctionMesh(body_mesh)
+
+extract_voxel_grid(ofm, body_mesh.bounds, np.array([64, 64, 64]), '../data/voxel/test.npz')
+
+voxel_grid_file = np.load('../data/voxel/test.npz')
+voxel_grid = voxel_grid_file['voxel_grid']
+voxel_start = voxel_grid_file['voxel_start']
+voxel_dimensions = voxel_grid_file['voxel_dimensions']
+
 #mo = MeshOccupancy(ofm, 0.5, body_mesh.bounds)
 wts = WeightTrainSampler(ofm, body_mesh, weights)
 
@@ -62,7 +68,20 @@ print('Occupancy mesh extracted')
 
 meshes = []
 
-meshes.append(body_mesh)
+for i in range(0, voxel_grid.shape[0]):
+    for j in range(0, voxel_grid.shape[1]):
+        for k in range(0, voxel_grid.shape[2]):
+            if voxel_grid[i][j][k] > 0.5:
+
+                voxel_position = voxel_start + voxel_dimensions * np.array([i, j, k])
+
+                box = trimesh.creation.box(voxel_dimensions, trimesh.transformations.translation_matrix(voxel_position))
+                meshes.append(box)
+
+
+#meshes.append(body_mesh)
+
+print(len(meshes))
 
 mv.set_static_meshes(meshes)
 mv.set_background_color([0.3, 0.4, 0.9])
