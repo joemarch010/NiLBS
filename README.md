@@ -22,7 +22,7 @@ The following packages are required.
  
 2. Download the 'models' and 'data' folders [here](https://drive.google.com/drive/u/0/folders/1pjJ1MD_kWWAfOIpKtssHe_HvQw887JBT) 
 
-3. Place the folders in the NiLBS directory.
+3. Place the folders in the NiLBS directory with the 'train' and 'demo' folders.
 
 
 ## Running the demos
