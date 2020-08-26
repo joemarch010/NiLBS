@@ -54,7 +54,7 @@ md = LBSMeshDeformer(vertices, wfmlpr)
 body_mesh = trimesh.Trimesh(vertices=vertices, faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 ofm = OccupancyFunctionMesh(body_mesh)
 
-extract_voxel_grid(ofm, body_mesh.bounds, np.array([64, 64, 64]), '../data/voxel/test.npz')
+#extract_voxel_grid(ofm, body_mesh.bounds, np.array([32, 32, 32]), '../data/voxel/test.npz')
 
 voxel_grid_file = np.load('../data/voxel/test.npz')
 voxel_grid = voxel_grid_file['voxel_grid']

@@ -9,7 +9,7 @@ class VoxelMatrix:
 
 
     """
-    def __init__(self, resolution):
+    def __init__(self, resolution, voxel_size):
         """
         :param resolution: [Int], (n, m, p) size of the voxel grid
         """
