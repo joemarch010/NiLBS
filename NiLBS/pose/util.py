@@ -54,18 +54,18 @@ def calculate_bone_matrices_smplh(rotation_matrices, joints, bone_hierarchy):
     relative_joints = np.zeros(joints.shape)
     relative_joints[0] = joints[0]
 
-    for i in range(1, bone_hierarchy.shape[1]):
+    for i in range(1, rotation_matrices.shape[0]):
 
         relative_joints[i] = joints[i] - joints[bone_hierarchy[0][i]]
 
-    transform_matrices = np.zeros((bone_hierarchy.shape[1], 4, 4))
+    transform_matrices = np.zeros((rotation_matrices.shape[0], 4, 4))
     transform_matrices[0] = transform_matrix(rotation_matrices[0], relative_joints[0])
 
-    for i in range(1, bone_hierarchy.shape[1]):
+    for i in range(1, rotation_matrices.shape[0]):
 
         transform_matrices[i] = np.matmul(transform_matrices[bone_hierarchy[0][i]], transform_matrix(rotation_matrices[i], relative_joints[i]))
 
-    for i in range(0, joints.shape[0]):
+    for i in range(0, rotation_matrices.shape[0]):
 
         joint_homo = np.zeros((4, 1))
         joint_homo[0] = joints[i][0]
