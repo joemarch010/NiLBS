@@ -1,5 +1,6 @@
 import numpy as np
 import trimesh
+import copy
 
 from human_body_prior.tools.omni_tools import colors
 from human_body_prior.mesh import MeshViewer
@@ -36,7 +37,16 @@ wf = WeightingFunction(weights.shape[1] + 1)
 body_mesh_rest = trimesh.Trimesh(vertices=vertices, faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 rest_occupancy = OccupancyFunctionMesh(body_mesh_rest)
 posed_occupancy = OccupancyFunctionRestCached(rest_occupancy, frame_poses[0], wf)
-voxel_dict = extract_voxel_grid(posed_occupancy, body_mesh_rest.bounds, np.array([32, 32, 32]))
+voxel_bounds = copy.copy(body_mesh_rest.bounds)
+t = voxel_bounds[0][1]
+voxel_bounds[0][1] = voxel_bounds[0][2] * 2
+voxel_bounds[0][2] = t
+voxel_bounds[0][0] *= 2
+t = voxel_bounds[1][1]
+voxel_bounds[1][1] = voxel_bounds[1][2] * 2
+voxel_bounds[1][2] = t
+voxel_bounds[1][0] *= 2
+voxel_dict = extract_voxel_grid(posed_occupancy, voxel_bounds, np.array([32, 32, 32]))
 voxel_grid = voxel_dict['voxel_grid']
 voxel_start = voxel_dict['voxel_start']
 voxel_dimensions = voxel_dict['voxel_dimensions']
