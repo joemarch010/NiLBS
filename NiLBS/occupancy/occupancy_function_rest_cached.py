@@ -35,9 +35,9 @@ class OccupancyFunctionRestCached(OccupancyFunction):
         :return: {o | o in [0, 1]}
         """
 
-        weight_set = self.weighting_function.evaluate_set(X)
-        X_reproj = self.lbs_deformer.invert_lbs((X, self.pose))
+        weight_set = self.weighting_function.evaluate_set(X, self.pose)
+        X_reproj = self.lbs_deformer.invert_lbs(X, self.pose)
         E = self.rest_occupancy_function.evaluate_set(X_reproj)
-
-        return (1 - weight_set[:][weight_set.shape[1] - 1]) * E
+        result = (1 - weight_set[:, weight_set.shape[1] - 1]) * E
+        return result
 

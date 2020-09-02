@@ -44,6 +44,7 @@ class WeightingFunction:
         :return: Numoy array-like, NxB, result of the weighting function at the points.
         """
 
-        result = np.zeros(X.shape[0], self.n_bones)
+        result = np.zeros((X.shape[0], self.n_bones))
+        result[:, 0] = 1
 
         return result
