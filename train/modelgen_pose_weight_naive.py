@@ -30,13 +30,13 @@ if __name__ == '__main__':
 
     for sample in train_data:
 
-        pose_encoding = sample['pose'].get_naive_encoding()
+        pose = sample['pose']
 
         for i in range(0, sample['rest_vertices'].shape[0]):
 
             vertex = sample['vertices'][i]
             weights = sample['weights'][i]
-            query = np.concatenate((vertex, pose_encoding), axis=0)
+            query = pose.get_nilbs_encoding(vertex)
 
             X.append(query)
             Y.append(weights)
@@ -45,21 +45,20 @@ if __name__ == '__main__':
     Y = np.array(Y)
 
     query_size = X.shape[1]
-    n_layer_weights = 40 * n_weights
+    n_layer_weights = 80 * n_weights
 
     model = keras.Sequential([
         layers.Dense(n_layer_weights, input_shape=[query_size], activation='relu'),
         layers.Dense(n_layer_weights, activation='relu'),
         layers.Dense(n_layer_weights, activation='relu'),
-        layers.Dense(n_layer_weights, activation='relu'),
         layers.Dense(n_weights, activation='softmax')
     ])
 
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse', 'msa'])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse'])
 
     model.summary()
 
-    model.fit(X, Y, epochs=1)
+    model.fit(X, Y, epochs=10)
 
     model.save(model_output_path)
 

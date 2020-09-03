@@ -16,7 +16,7 @@ from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointw
 from NiLBS.weighting.weighting_function_mlp_naive import WeightingFunctionMLPNaive
 from NiLBS.weighting.weighting_function_mlp_rest_naive import WeightingFunctionMLPRestNaive
 from NiLBS.pose.pose import Pose
-from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
+from NiLBS.skinning.skinning_mesh_lbs import LBSDeformer
 from NiLBS.pose.util import pose_from_smplh
 from NiLBS.sampling.point_sampler_box import PointSamplerBox
 from NiLBS.sampling.point_sampler_surface import PointSamplerSurface
@@ -50,7 +50,7 @@ weight_model_path = '../models/weight_rest_naive'
 wfmlpr = WeightingFunctionMLPRestNaive(model_path=weight_model_path)
 wf = WeightingFunctionPointwise(vertices, weights)
 
-md = LBSMeshDeformer(vertices, wfmlpr)
+md = LBSDeformer(vertices, wfmlpr)
 body_mesh = trimesh.Trimesh(vertices=vertices, faces=faces, vertex_colors=np.tile(colors['grey'], (6890, 1)))
 ofm = OccupancyFunctionMesh(body_mesh)
 

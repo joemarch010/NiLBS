@@ -2,11 +2,12 @@
 import numpy as np
 
 
-def extract_voxel_grid(occupancy_function, bounds, initial_resolution, output_file):
+def extract_voxel_grid(occupancy_function, bounds, initial_resolution, output_file=None):
     """
     :param occupancy_function:
     :param bounds:
     :param initial_resolution:
+    :param output_file:
     :return:
     """
 
@@ -39,6 +40,14 @@ def extract_voxel_grid(occupancy_function, bounds, initial_resolution, output_fi
 
                     voxel_grid[i][j][k] = 0.2
 
-    np.savez(output_file, voxel_start=bounds[0], voxel_dimensions=voxel_dimensions, voxel_grid=voxel_grid)
+    if output_file is not None:
 
-    return None
+        np.savez(output_file, voxel_start=bounds[0], voxel_dimensions=voxel_dimensions, voxel_grid=voxel_grid)
+
+    result = dict()
+
+    result['voxel_start'] = bounds[0]
+    result['voxel_dimensions'] = voxel_dimensions
+    result['voxel_grid'] = voxel_grid
+
+    return result

@@ -8,7 +8,7 @@ from human_body_prior.tools.omni_tools import copy2cpu as c2c
 from NiLBS.occupancy.occupancy_function_mesh import OccupancyFunctionMesh
 from NiLBS.sampling.pose_sampler_amass import PoseSamplerAMASS
 from NiLBS.sampling.weight_train_sampler import WeightTrainSampler
-from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
+from NiLBS.skinning.skinning_mesh_lbs import LBSDeformer
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 
 if __name__ == '__main__':
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     vertex_template = c2c(bm.v_template)[0]
     weighting_function = WeightingFunctionPointwise(vertex_template, weights)
 
-    mesh_deformer = LBSMeshDeformer(vertex_template, weighting_function)
+    mesh_deformer = LBSDeformer(weighting_function)
 
     psa = PoseSamplerAMASS(bm, bdata)
     poses = psa.sample_frames(n_frames=n_frames, step=frame_step, offset=frame_offset)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     for i in range(0, poses.shape[0]):
 
         pose = poses[i]
-        posed_vertices = mesh_deformer.apply_lbs(pose)
+        posed_vertices = mesh_deformer.apply_lbs(vertex_template, pose)
         posed_mesh = trimesh.Trimesh(vertices=posed_vertices, faces=faces)
         posed_occupancy_function = OccupancyFunctionMesh(posed_mesh)
         weight_train_sampler = WeightTrainSampler(posed_occupancy_function, posed_mesh, weights)

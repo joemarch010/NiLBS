@@ -60,6 +60,6 @@ class Pose:
         nasa_encoding = self.get_nasa_encoding(x)
         ghost_bone_corrective = nasa_encoding[0:3]
 
-        result = np.concatenate(nasa_encoding, ghost_bone_corrective, axis=0)
+        result = np.concatenate((nasa_encoding, ghost_bone_corrective), axis=0)
 
         return result

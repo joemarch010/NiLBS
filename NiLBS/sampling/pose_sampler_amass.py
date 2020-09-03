@@ -45,7 +45,7 @@ class PoseSamplerAMASS:
             pose_body = self.bdata['poses'][i:i + 1, 3:66]
             pose_hand = self.bdata['poses'][i:i + 1, 66:]
 
-            full_pose = np.concatenate((root_orient, pose_body, pose_hand), axis=1).transpose()
+            full_pose = np.concatenate((root_orient, pose_body), axis=1).transpose()
             pose = pose_from_smplh(self.v_template, full_pose, self.bone_hierachy, self.j_regressor)
 
             poses.append(pose)

@@ -35,9 +35,6 @@ class MeshOccupancy:
 
         return
 
-
-        return result
-
     def calculate_voxels(self):
 
         x_range = np.linspace(self.lower[0], self.upper[0], self.resolution[0])

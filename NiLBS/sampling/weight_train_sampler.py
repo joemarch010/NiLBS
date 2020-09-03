@@ -3,7 +3,7 @@ import numpy as np
 
 from NiLBS.sampling.point_sampler_box import PointSamplerBox
 from NiLBS.sampling.point_sampler_surface import PointSamplerSurface
-from NiLBS.skinning.skinning_mesh_lbs import LBSMeshDeformer
+from NiLBS.skinning.skinning_mesh_lbs import LBSDeformer
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 
 
@@ -27,7 +27,7 @@ class WeightTrainSampler:
         self.weights = weights
 
         wf = WeightingFunctionPointwise(mesh.vertices, weights)
-        self.lbs_deformer = LBSMeshDeformer(mesh.vertices, wf)
+        self.lbs_deformer = LBSDeformer(wf)
 
     def sample_pose(self, pose, n_bb_points=1024, n_surface_points=1024):
         """
@@ -35,7 +35,7 @@ class WeightTrainSampler:
         Create a sample from a pose using a given number of sample points.
 
         @Additional:
-            It may be worth saving surface occupancy and bounding box ocupancy separately.
+            It may be worth saving surface occupancy and bounding box occupancy separately.
 
         :param pose: Numpy array-like, Bx4x4, bone matrices for use in mesh deformation.
         :param n_bb_points: Int, number of points to use within the bounding box of the mesh.
@@ -46,7 +46,7 @@ class WeightTrainSampler:
                                 'occupancy_points': pre-calculated occupancy value for all sample points packed (vertex, occupancy)
         """
 
-        posed_vertices = self.lbs_deformer.apply_lbs(pose)
+        posed_vertices = self.lbs_deformer.apply_lbs(self.mesh.vertices, pose)
         result = dict()
         psb = PointSamplerBox(self.mesh.bounds)
         pss = PointSamplerSurface(self.mesh, noise='isotropic', sigma=0.3)
@@ -63,7 +63,7 @@ class WeightTrainSampler:
         result['vertices'] = posed_vertices
         result['rest_vertices'] = self.mesh.vertices
         result['pose'] = pose
-        result['weights'] = self.weights
+        result['weights'] = self.weights[:, 0:pose.bone_matrices.shape[0]]
         result['occupancy_points'] = occupancy_points
 
         return result
