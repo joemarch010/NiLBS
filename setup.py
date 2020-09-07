@@ -7,5 +7,5 @@ setup(
    author='Joe March',
    author_email='jgm45@cam.ac.uk',
    packages=['NiLBS'],  #same as name
-   install_requires=[], #external packages as dependencies
+   install_requires=['trimesh', 'pyrender', 'tensorflow'], #external packages as dependencies
 )
