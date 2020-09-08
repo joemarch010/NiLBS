@@ -83,7 +83,7 @@ def calculate_bone_matrices_smplh(rotation_matrices, joints, bone_hierarchy):
     return None
 
 
-def pose_from_smplh(vertex_template, full_pose, bone_hierarchy, j_regressor):
+def pose_from_smplh(vertex_template, full_pose, bone_hierarchy, joints):
     """
 
     Produces a pose from the SMPLH configuration provided.
@@ -95,7 +95,7 @@ def pose_from_smplh(vertex_template, full_pose, bone_hierarchy, j_regressor):
     :return: Fully configured Pose which ban be used on any mesh with the same vertex template.
     """
 
-    joints = calculate_joints(vertex_template, j_regressor)
+    #joints = calculate_joints(vertex_template, j_regressor)
     rotation_matrices = rodrigues(full_pose)
     bone_matrices = calculate_bone_matrices_smplh(rotation_matrices, joints, bone_hierarchy)
     result = Pose(bone_matrices)

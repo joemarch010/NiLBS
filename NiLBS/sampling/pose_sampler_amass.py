@@ -1,7 +1,6 @@
 
 import numpy as np
 
-from human_body_prior.tools.omni_tools import copy2cpu as c2c
 from NiLBS.pose.util import pose_from_smplh
 
 class PoseSamplerAMASS:
@@ -16,12 +15,13 @@ class PoseSamplerAMASS:
     def __init__(self, body_model, bdata):
         """
 
-        :param body_model: human_body_prior.BodyModel
+        :param body_model: HumanBody
         :param bdata: .npz file, must contain the following attributes: 'poses'
         """
-        self.v_template = c2c(body_model.v_template)[0]
-        self.bone_hierachy = c2c(body_model.kintree_table)
-        self.j_regressor = body_model.J_regressor
+        self.v_template = body_model.vertex_template
+        self.bone_hierachy = body_model.bone_hierarchy
+        #self.j_regressor = body_model.J_regressor
+        self.joints = body_model.joints
         self.bdata = bdata
 
     def sample_frames(self, n_frames=-1, step=1, offset=0):
@@ -46,7 +46,7 @@ class PoseSamplerAMASS:
             pose_hand = self.bdata['poses'][i:i + 1, 66:]
 
             full_pose = np.concatenate((root_orient, pose_body), axis=1).transpose()
-            pose = pose_from_smplh(self.v_template, full_pose, self.bone_hierachy, self.j_regressor)
+            pose = pose_from_smplh(self.v_template, full_pose, self.bone_hierachy, self.joints)
 
             poses.append(pose)
 
