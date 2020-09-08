@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
    name='NiLBS',
-   version='0.5.1',
+   version='0.5.2',
    description='NiLBS 3D implementation.',
    author='Joe March',
    author_email='jgm45@cam.ac.uk',
