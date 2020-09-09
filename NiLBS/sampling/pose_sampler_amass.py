@@ -27,7 +27,7 @@ class PoseSamplerAMASS:
     def sample_frames(self, n_frames=-1, step=1, offset=0):
         """
 
-        :param n_frame: total number of frames to extract, -1 for all.
+        :param n_frames: total number of frames to extract, -1 for all.
         :param step: step between each sampled frame.
         :param offset: frame to begin sampling at.
         :return: Numpy array-like, F, contains one pose for each frame.
@@ -41,7 +41,7 @@ class PoseSamplerAMASS:
             if count >= n_frames != -1:
                 break
 
-            root_orient = self.bdata['poses'][i:i + 1, :3]
+            root_orient = np.array([[0, 0, 0]])
             pose_body = self.bdata['poses'][i:i + 1, 3:66]
             pose_hand = self.bdata['poses'][i:i + 1, 66:]
 
