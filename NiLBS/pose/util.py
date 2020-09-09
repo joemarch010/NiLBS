@@ -9,7 +9,6 @@ from NiLBS.pose.pose import Pose
 #    vertex_tensor = torch.tensor(vertices)
 #    return torch.einsum('ik,ji->jk', [vertex_tensor, j_regressor])
 
-
 def rodrigues(rotations):
 
     n_rotations = int(rotations.shape[0] / 3)

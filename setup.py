@@ -14,5 +14,6 @@ setup(
              'NiLBS.pose',
              'NiLBS.sampling',
              'NiLBS.weighting'],
+   package_data=['data/*.npz'],
    install_requires=['trimesh', 'pyrender', 'tensorflow'], #external packages as dependencies
 )
