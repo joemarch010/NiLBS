@@ -1,5 +1,4 @@
 import sys, os, time
-import torch
 import numpy as np
 import trimesh
 from trimesh.creation import icosphere

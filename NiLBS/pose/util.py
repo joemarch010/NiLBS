@@ -1,14 +1,13 @@
 
 import numpy as np
-import torch
 
 from NiLBS.pose.pose import Pose
 
 
-def calculate_joints(vertices, j_regressor):
+#def calculate_joints(vertices, j_regressor):
 
-    vertex_tensor = torch.tensor(vertices)
-    return torch.einsum('ik,ji->jk', [vertex_tensor, j_regressor])
+#    vertex_tensor = torch.tensor(vertices)
+#    return torch.einsum('ik,ji->jk', [vertex_tensor, j_regressor])
 
 
 def rodrigues(rotations):
@@ -80,8 +79,6 @@ def calculate_bone_matrices_smplh(rotation_matrices, joints, bone_hierarchy):
 
     return transform_matrices
 
-    return None
-
 
 def pose_from_smplh(vertex_template, full_pose, bone_hierarchy, joints):
     """
@@ -91,11 +88,10 @@ def pose_from_smplh(vertex_template, full_pose, bone_hierarchy, joints):
     :param vertex_template: Numpy array-like, V x 3, vertex position data at rest.
     :param full_pose: Numpy array-like, B x 3, bone rotation data.
     :param bone_hierarchy: Numpy array-like, B, index of parent bone, -1 if root.
-    :param j_regressor: Torch.tensor, function used to determine the position of joints.
+    :param joints
     :return: Fully configured Pose which ban be used on any mesh with the same vertex template.
     """
 
-    #joints = calculate_joints(vertex_template, j_regressor)
     rotation_matrices = rodrigues(full_pose)
     bone_matrices = calculate_bone_matrices_smplh(rotation_matrices, joints, bone_hierarchy)
     result = Pose(bone_matrices)
