@@ -6,6 +6,7 @@ import pyrender
 from NiLBS.weighting.weighting_function_pointwise import WeightingFunctionPointwise
 from NiLBS.weighting.weighting_function_mlp_naive import WeightingFunctionMLPNaive
 from NiLBS.weighting.weighting_function_mlp_rest_naive import WeightingFunctionMLPRestNaive
+from NiLBS.demo.scene import make_default_model_pose_scene
 from NiLBS.skinning.skinning_mesh_lbs import LBSDeformer
 from NiLBS.skinning.util import redistribute_weights
 from NiLBS.sampling.pose_sampler_amass import PoseSamplerAMASS
@@ -16,9 +17,7 @@ npz_bdata_path = '../data/AMASS/MPILimits/MPI_Limits/03099/lar1_poses.npz'
 weight_model_path_mlp = '../models/weight_naive'
 weight_model_path_mlpr = '../models/weight_rest_naive'
 
-body_model_dict = np.load(bm_path)
-body_model = HumanBody(body_model_dict)
-joints = body_model_dict['J']
+body_model = HumanBody(body_dict_path=bm_path)
 faces = body_model.faces
 
 bdata = np.load(npz_bdata_path)
@@ -70,6 +69,7 @@ camera_pose = np.eye(4)
 camera_pose[:3, 3] = np.array([0, 0, 2.5])
 scene.add(camera, pose=camera_pose)
 
+scene = make_default_model_pose_scene()
 
 viewer = pyrender.Viewer(scene, use_raymond_lighting=True, run_in_thread=False)
 viewer.run()
