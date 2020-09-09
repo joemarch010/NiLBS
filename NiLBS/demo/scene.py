@@ -72,4 +72,9 @@ def make_default_nilbs_scene():
                     box_mesh = pyrender.Mesh.from_trimesh(trimesh_mesh)
                     result.add(box_mesh)
 
+    camera = pyrender.PerspectiveCamera(yfov=np.pi / 3.0)
+    camera_pose = np.eye(4)
+    camera_pose[:3, 3] = np.array([0, 0, 2.5])
+    result.add(camera, pose=camera_pose)
+
     return result
