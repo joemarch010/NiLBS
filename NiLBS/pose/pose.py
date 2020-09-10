@@ -13,9 +13,15 @@ class Pose:
         """
         self.bone_matrices = bone_matrices
         self.inverse_bone_matrices = np.zeros(bone_matrices.shape)
+        self.posed_joints = np.zeros((bone_matrices.shape[0], 3))
 
         for i in range(0, bone_matrices.shape[0]):
             self.inverse_bone_matrices[i] = np.linalg.inv(bone_matrices[i])
+
+        for i in range(0, bone_matrices.shape[0]):
+            self.posed_joints[i][0] = self.bone_matrices[i][0][3]
+            self.posed_joints[i][1] = self.bone_matrices[i][1][3]
+            self.posed_joints[i][0] = self.bone_matrices[i][2][3]
 
     def get_naive_encoding(self, x):
         """
